@@ -1,3 +1,1 @@
-## Class Diagram
-
-![class diagram](./assets/class-diagram.png)
+# CRUD de estudantes com o Django
