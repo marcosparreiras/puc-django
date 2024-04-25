@@ -1,0 +1,36 @@
+###
+# Cria estudante
+POST http://localhost:8000/api/student/
+Content-Type: application/json
+
+{
+  "name": "Marcos Parreiras",
+  "date_of_birth": "1998-12-09",
+  "address_street": "Rua das Fausto Guimarães",
+  "address_number": 356
+}
+
+###
+# Lista estudantes
+GET http://localhost:8000/api/student/
+
+###
+# Exibe estudante 
+GET http://localhost:8000/api/student/3
+
+###
+# Atualiza estudante
+PUT http://localhost:8000/api/student/2
+Content-Type: application/json
+
+{
+  "name": "Marcos Parreiras",
+  "date_of_birth": "1998-12-09",
+  "address_street": "Rua das Flores",
+  "address_number": 134
+}
+
+###
+# Deleta estudante
+DELETE http://localhost:8000/api/student/1
+
