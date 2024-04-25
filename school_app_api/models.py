@@ -18,3 +18,6 @@ class User(models.Model):
     updated_at = models.DateField(null=True)
     created_at = models.DateField(default=datetime.date.today)
 
+    def __str__(self):
+        return f"({self.id}) {self.name}"
+
