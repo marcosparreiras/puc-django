@@ -1,3 +1,6 @@
+from django.http import HttpResponse
+from django.template import loader
+
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -5,6 +8,18 @@ from rest_framework.request import Request
 
 from .models import Student
 from . import serizalizers
+
+
+# Template views
+
+
+def appView(request):
+    template = loader.get_template("index.html")
+    context = {"students": Student.objects.all()}
+    return HttpResponse(template.render(context, request))
+
+
+# REST views
 
 
 @api_view(["POST", "GET"])
@@ -31,6 +46,9 @@ def studentCodeView(request: Request, student_code: int) -> Response:
             {"message": "Internal server error"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
+
+
+# REST Controllers
 
 
 def createStudent(request: Request) -> Response:

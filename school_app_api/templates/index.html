@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Students Page</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        border-radius: 8px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #111;
+        border-radius: 10px;
+      }
+
+      body {
+        background-color: #111;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        padding: 30px;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        padding-left: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        box-shadow: 3px 2px 5px #aaa;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        border-bottom: 1px solid #444;
+      }
+
+      th {
+        background-color: #333;
+        text-align: start;
+      }
+
+      tr {
+        transition: 150ms ease-out;
+      }
+
+      tr:nth-child(even) {
+        background-color: #222;
+      }
+
+      tr:hover {
+        background-color: #444;
+      }
+
+      .button {
+        background-color: #555;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 4px;
+        transition: 150ms ease-in;
+      }
+
+      .button:hover {
+        background-color: rgb(192, 42, 42);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Alunos</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nome</th>
+          <th>Data de Nascimento</th>
+          <th>Data de Cadastro</th>
+          <th>Endereço</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sutdent in students %}
+
+        <tr>
+          <td>{{sutdent.student_code}}</td>
+          <td>{{sutdent.name}}</td>
+          <td>{{sutdent.date_of_birth}}</td>
+          <td>{{sutdent.created_at}}</td>
+          <td>{{sutdent.address_street}}, {{sutdent.address_number}}</td>
+          <td>
+            <button
+              class="button"
+              onclick="handleDelete(event)"
+              data-code="{{sutdent.student_code}}"
+              data-name="{{sutdent.name}}"
+            >
+              Deletar
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+  <script>
+    async function handleDelete(event) {
+      const button = event.target;
+      const { code, name } = button.dataset;
+      const response = await fetch(
+        `http://localhost:8000/api/student/${code}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (response.status >= 200 && response.status < 300) {
+        alert(`Estudante ${name} excluido com`);
+      }
+    }
+  </script>
+</html>
