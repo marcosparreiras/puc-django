@@ -13,17 +13,22 @@ from . import serizalizers
 # Template views
 
 
-def appView(request):
-    template = loader.get_template("index.html")
+def templateStudentLitView(request):
+    template = loader.get_template("student-list.html")
     context = {"students": Student.objects.all()}
     return HttpResponse(template.render(context, request))
+
+
+def templateStudentCreateView(_):
+    template = loader.get_template("student-create.html")
+    return HttpResponse(template.render())
 
 
 # REST views
 
 
 @api_view(["POST", "GET"])
-def studentView(request: Request) -> Response:
+def restStudentView(request: Request) -> Response:
     controllers = {"POST": createStudent, "GET": listStudents}
     try:
         response = controllers[request.method](request)
@@ -36,7 +41,7 @@ def studentView(request: Request) -> Response:
 
 
 @api_view(["GET", "PUT", "DELETE"])
-def studentCodeView(request: Request, student_code: int) -> Response:
+def restStudentCodeView(request: Request, student_code: int) -> Response:
     controllers = {"GET": getStudent, "PUT": updateStudent, "DELETE": deleteStudent}
     try:
         response = controllers[request.method](request, student_code)

@@ -4,8 +4,9 @@ from . import views
 
 urlpatterns = [
     # Template API
-    path("app/", views.appView),
+    path("student/app/home", views.templateStudentLitView),
+    path("student/app/create", views.templateStudentCreateView),
     # REST API
-    path("student/", views.studentView),
-    path("student/<int:student_code>", views.studentCodeView),
+    path("student/", views.restStudentView),
+    path("student/<int:student_code>", views.restStudentCodeView),
 ]

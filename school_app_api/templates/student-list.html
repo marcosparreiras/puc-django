@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Students Page</title>
+    <title>Estudantes</title>
     <style>
       * {
         margin: 0;
@@ -32,9 +32,10 @@
         padding: 30px;
       }
 
-      h1 {
-        margin-bottom: 20px;
-        padding-left: 20px;
+      header {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
       }
 
       table {
@@ -67,9 +68,7 @@
         background-color: #444;
       }
 
-      .button {
-        background-color: #555;
-        color: #fff;
+      button {
         border: none;
         padding: 8px 12px;
         cursor: pointer;
@@ -80,13 +79,33 @@
         transition: 150ms ease-in;
       }
 
-      .button:hover {
+      .add-btn {
+        background: none;
+        color: rgb(53, 240, 53);
+        border: 1px solid rgb(53, 240, 53);
+      }
+
+      .add-btn:hover {
+        background: rgb(51, 160, 51);
+        color: #fff;
+        border: 1px solid rgb(51, 160, 51);
+      }
+
+      .delete-btn {
+        background-color: #555;
+        color: #fff;
+      }
+
+      .delete-btn:hover {
         background-color: rgb(192, 42, 42);
       }
     </style>
   </head>
   <body>
-    <h1>Alunos</h1>
+    <header>
+      <h1>Alunos</h1>
+      <button class="add-btn" onclick="handleAdd()">Add</button>
+    </header>
     <table>
       <thead>
         <tr>
@@ -100,7 +119,6 @@
       </thead>
       <tbody>
         {% for sutdent in students %}
-
         <tr>
           <td>{{sutdent.student_code}}</td>
           <td>{{sutdent.name}}</td>
@@ -109,7 +127,7 @@
           <td>{{sutdent.address_street}}, {{sutdent.address_number}}</td>
           <td>
             <button
-              class="button"
+              class="delete-btn"
               onclick="handleDelete(event)"
               data-code="{{sutdent.student_code}}"
               data-name="{{sutdent.name}}"
@@ -123,6 +141,12 @@
     </table>
   </body>
   <script>
+    function handleAdd() {
+      const url = new URL(location.href);
+      url.pathname = "/api/student/app/create";
+      location = url.toString();
+    }
+
     async function handleDelete(event) {
       const button = event.target;
       const { code, name } = button.dataset;
@@ -132,9 +156,11 @@
           method: "DELETE",
         }
       );
-      if (response.status >= 200 && response.status < 300) {
-        alert(`Estudante ${name} excluido com`);
+      if (response.status < 200 || response.status >= 300) {
+        alert("Algo deu errado, tente novamente mais tarde!");
       }
+      alert(`Estudante ${name} excluido com sucesso!`);
+      location.reload();
     }
   </script>
 </html>
