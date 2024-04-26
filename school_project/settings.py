@@ -60,7 +60,7 @@ DATABASES = {
         "NAME": "school_db",
         "USER": "admin",
         "PASSWORD": "admin",
-        "HOST": "127.0.0.1",
+        "HOST": "school_db",
         "PORT": "5432",
     }
 }

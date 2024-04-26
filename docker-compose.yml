@@ -12,3 +12,20 @@ services:
       - ./data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    networks:
+      - network-django-puc
+
+  django-app:
+    build:
+      context: .
+    container_name: django-app
+    ports:
+      - 8000:8000
+    depends_on:
+      - school_db
+    networks:
+      - network-django-puc
+
+networks:
+  network-django-puc:
+    driver: bridge

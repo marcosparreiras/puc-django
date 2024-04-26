@@ -1,15 +1,16 @@
 // DJANGO
 django-admin startproject mysite [project-name]
 python manage.py startapp [app-name]
-
 python manage.py makemigrations [app_name]
 python manage.py sqlmigrate [app-name] [migration-name]
 python manage.py migrate
-
 python manage.py runserver
 
-
 // ENV
+python -m venv ./env
 source ./env/Scripts/activate
 pip freeze > requirements.txt
 pip install -r requirements.txt
+
+// DOCKER 
+docker compose up -d --build

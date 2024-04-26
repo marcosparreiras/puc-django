@@ -161,6 +161,7 @@
         alert("O número do endereço deve ser um inteiro");
         return;
       }
+
       const response = await fetch("http://localhost:8000/api/student/", {
         method: "POST",
         headers: {
