@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
-CMD wait-for school_db:5432 && python manage.py migrate && python manage.py runserver 0.0.0.0:8000 --noreload
+CMD wait-for school_db:5432 -- python manage.py migrate && python manage.py runserver 0.0.0.0:8000 --noreload
