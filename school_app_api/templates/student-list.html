@@ -99,6 +99,16 @@
       .delete-btn:hover {
         background-color: rgb(192, 42, 42);
       }
+
+      .empty-table {
+        height: 40vh;
+        color: #444;
+        font-size: 2.2rem;
+        text-align: center;
+      }
+      .empty-table:hover {
+        background-color: #111;
+      }
     </style>
   </head>
   <body>
@@ -118,19 +128,23 @@
         </tr>
       </thead>
       <tbody>
-        {% for sutdent in students %}
+        {% if students|length == 0 %}
+        <tr class="empty-table">
+          <td colspan="6">Nenhum estudante cadastrado até o momento. 😓</td>
+        </tr>
+        {% endif %} {% for student in students %}
         <tr>
-          <td>{{sutdent.student_code}}</td>
-          <td>{{sutdent.name}}</td>
-          <td>{{sutdent.date_of_birth}}</td>
-          <td>{{sutdent.created_at}}</td>
-          <td>{{sutdent.address_street}}, {{sutdent.address_number}}</td>
+          <td>{{student.student_code}}</td>
+          <td>{{student.name}}</td>
+          <td>{{student.date_of_birth}}</td>
+          <td>{{student.created_at}}</td>
+          <td>{{student.address_street}}, {{student.address_number}}</td>
           <td>
             <button
               class="delete-btn"
               onclick="handleDelete(event)"
-              data-code="{{sutdent.student_code}}"
-              data-name="{{sutdent.name}}"
+              data-code="{{student.student_code}}"
+              data-name="{{student.name}}"
             >
               Deletar
             </button>
@@ -158,7 +172,7 @@
       );
       if (response.status < 200 || response.status >= 300) {
         alert("Algo deu errado, tente novamente mais tarde!");
-        return
+        return;
       }
       alert(`Estudante ${name} excluido com sucesso!`);
       location.reload();
