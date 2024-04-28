@@ -86,12 +86,17 @@
       }
 
       .add-btn:hover {
-        background: rgb(51, 160, 51);
-        color: #fff;
         border: 1px solid rgb(51, 160, 51);
       }
 
-      .delete-btn {
+      .add-btn:hover,
+      .edit-btn:hover {
+        background: rgb(51, 160, 51);
+        color: #fff;
+      }
+
+      .delete-btn,
+      .edit-btn {
         background-color: #555;
         color: #fff;
       }
@@ -141,6 +146,13 @@
           <td>{{student.address_street}}, {{student.address_number}}</td>
           <td>
             <button
+              class="edit-btn"
+              onclick="handleEdit(event)"
+              data-code="{{student.student_code}}"
+            >
+              Editar
+            </button>
+            <button
               class="delete-btn"
               onclick="handleDelete(event)"
               data-code="{{student.student_code}}"
@@ -155,10 +167,20 @@
     </table>
   </body>
   <script>
-    function handleAdd() {
+    function redirectTo(pathname) {
       const url = new URL(location.href);
-      url.pathname = "/api/student/app/create";
+      url.pathname = pathname;
       location = url.toString();
+    }
+
+    function handleAdd() {
+      redirectTo("/api/student/app/create");
+    }
+
+    function handleEdit(event) {
+      const button = event.target;
+      const { code } = button.dataset;
+      redirectTo(`/api/student/app/edit/${code}`);
     }
 
     async function handleDelete(event) {

@@ -9,6 +9,17 @@ def templateStudentLitView(request: HttpRequest) -> HttpResponse:
     return HttpResponse(template.render(context, request))
 
 
-def templateStudentCreateView(_: HttpRequest) -> HttpResponse:
+def templateStudentCreateView(request: HttpRequest) -> HttpResponse:
     template = loader.get_template("student-create.html")
-    return HttpResponse(template.render())
+    return HttpResponse(template.render(None, request))
+
+
+def templateStudentEditView(request: HttpRequest, student_code: int) -> HttpResponse:
+    try:
+        template = loader.get_template("student-edit.html")
+        context = {"student": Student.objects.get(student_code=student_code)}
+    except Student.DoesNotExist:
+        template = loader.get_template("student-404.html")
+        context = None
+    finally:
+        return HttpResponse(template.render(context, request))
