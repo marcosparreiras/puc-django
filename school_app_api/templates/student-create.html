@@ -172,6 +172,7 @@
 
       if (response.status < 200 || response.status >= 300) {
         alert("Algo deu errado, tente novamente mais tarde!");
+        return;
       }
 
       alert(`Estudante ${data.name} criado com sucesso!`);
