@@ -2,29 +2,7 @@ from rest_framework import serializers
 from .models import Student
 
 
-class StudentModelCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Student
-        fields = [
-            "name",
-            "date_of_birth",
-            "address_street",
-            "address_number",
-        ]
-
-
-class StudentModelUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Student
-        fields = [
-            "name",
-            "date_of_birth",
-            "address_street",
-            "address_number",
-        ]
-
-
-class StudentModelShowSerializer(serializers.ModelSerializer):
+class StudentModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = [
@@ -35,3 +13,21 @@ class StudentModelShowSerializer(serializers.ModelSerializer):
             "address_street",
             "address_number",
         ]
+
+
+class StudentModelPresenterSerializer(StudentModelSerializer):
+    pass
+
+
+class StudentModelCreateRequestSerializer(StudentModelSerializer):
+    class Meta(StudentModelSerializer.Meta):
+        fields = [
+            "name",
+            "date_of_birth",
+            "address_street",
+            "address_number",
+        ]
+
+
+class StudentModelUpdateRequestSerializer(StudentModelCreateRequestSerializer):
+    pass

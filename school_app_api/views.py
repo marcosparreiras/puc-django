@@ -57,7 +57,10 @@ def restStudentCodeView(request: Request, student_code: int) -> Response:
 
 
 def createStudent(request: Request) -> Response:
-    serializedRequestData = serizalizers.StudentModelCreateSerializer(data=request.data)
+    serializedRequestData = serizalizers.StudentModelCreateRequestSerializer(
+        data=request.data
+    )
+
     if not serializedRequestData.is_valid():
         return Response(
             {"message": serializedRequestData.errors},
@@ -69,7 +72,7 @@ def createStudent(request: Request) -> Response:
         address_street=serializedRequestData.data.get("address_street"),
         address_number=serializedRequestData.data.get("address_number"),
     )
-    serializedStudent = serizalizers.StudentModelShowSerializer(student)
+    serializedStudent = serizalizers.StudentModelPresenterSerializer(student)
     return Response(
         {"student_code": serializedStudent.data.get("student_code")},
         status=status.HTTP_201_CREATED,
@@ -78,14 +81,16 @@ def createStudent(request: Request) -> Response:
 
 def listStudents(_: Request) -> Response:
     students = Student.objects.all()
-    serializedStudents = serizalizers.StudentModelShowSerializer(students, many=True)
+    serializedStudents = serizalizers.StudentModelPresenterSerializer(
+        students, many=True
+    )
     return Response({"students": serializedStudents.data}, status=status.HTTP_200_OK)
 
 
 def getStudent(_: Request, student_code: int) -> Response:
     try:
         student = Student.objects.get(student_code=student_code)
-        serializedStudent = serizalizers.StudentModelShowSerializer(student)
+        serializedStudent = serizalizers.StudentModelPresenterSerializer(student)
         return Response({"student": serializedStudent.data}, status=status.HTTP_200_OK)
     except Student.DoesNotExist:
         return Response(
@@ -94,7 +99,9 @@ def getStudent(_: Request, student_code: int) -> Response:
 
 
 def updateStudent(request: Request, student_code: int) -> Response:
-    serializedRequestData = serizalizers.StudentModelUpdateSerializer(data=request.data)
+    serializedRequestData = serizalizers.StudentModelUpdateRequestSerializer(
+        data=request.data
+    )
     if not serializedRequestData.is_valid():
         return Response(
             {"message": serializedRequestData.errors},
