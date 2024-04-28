@@ -19,6 +19,12 @@ services:
     build:
       context: .
     container_name: django-app
+    environment:
+      - SCHOOL_DB_NAME=school_db
+      - SCHOOL_DB_USER=admin
+      - SCHOOL_DB_PASSWORD=admin
+      - SCHOOL_DB_HOST=school_db
+      - SCHOOL_DB_PORT=5432
     ports:
       - 8000:8000
     depends_on:

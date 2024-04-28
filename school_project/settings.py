@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -57,11 +62,11 @@ REST_FRAMEWORK = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "school_db",
-        "USER": "admin",
-        "PASSWORD": "admin",
-        "HOST": "school_db",
-        "PORT": "5432",
+        "NAME": os.environ.get("SCHOOL_DB_NAME"),
+        "USER": os.environ.get("SCHOOL_DB_USER"),
+        "PASSWORD": os.environ.get("SCHOOL_DB_PASSWORD"),
+        "HOST": os.environ.get("SCHOOL_DB_HOST"),
+        "PORT": os.environ.get("SCHOOL_DB_PORT"),
     }
 }
 
