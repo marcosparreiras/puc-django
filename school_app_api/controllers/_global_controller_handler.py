@@ -4,36 +4,16 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import Request
 
-from .exceptions import InvalidRequestPayloadException, StudentNotFoundException
-from . import rest_controllers
+from ..exceptions.invalid_request_payload_exception import (
+    InvalidRequestPayloadException,
+)
+from ..exceptions.student_not_found_exception import StudentNotFoundException
 
 
-@api_view(["POST", "GET"])
-def restStudentView(request: Request) -> Response:
-    controllers = {
-        "POST": rest_controllers.createStudent,
-        "GET": rest_controllers.listStudents,
-    }
-    response = restViewHandler(request, controllers)
-    return response
-
-
-@api_view(["GET", "PUT", "DELETE"])
-def restStudentCodeView(request: Request, student_code: int) -> Response:
-    controllers = {
-        "GET": rest_controllers.getStudent,
-        "PUT": rest_controllers.updateStudent,
-        "DELETE": rest_controllers.deleteStudent,
-    }
-    response = restViewHandler(request, controllers, student_code=student_code)
-    return response
-
-
-def restViewHandler(
+def globalControllerHandler(
     request: Request,
     controllers: Dict[str, Callable[[Request], Response]],
     **kwargs: Dict[str, any]

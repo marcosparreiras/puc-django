@@ -1,17 +1,21 @@
 from django.urls import path
-from . import views_template_api
-from . import views_rest_api
+from .views.rest_views import restStudentView, restStudentCodeView
+from .views.template_views import (
+    templateStudentLitView,
+    templateStudentCreateView,
+    templateStudentEditView,
+)
 
 
 urlpatterns = [
+    # REST API
+    path("student/", restStudentView),
+    path("student/<int:student_code>", restStudentCodeView),
     # Template API
-    path("student/app/home", views_template_api.templateStudentLitView),
-    path("student/app/create", views_template_api.templateStudentCreateView),
+    path("student/app/home", templateStudentLitView),
+    path("student/app/create", templateStudentCreateView),
     path(
         "student/app/edit/<int:student_code>",
-        views_template_api.templateStudentEditView,
+        templateStudentEditView,
     ),
-    # REST API
-    path("student/", views_rest_api.restStudentView),
-    path("student/<int:student_code>", views_rest_api.restStudentCodeView),
 ]

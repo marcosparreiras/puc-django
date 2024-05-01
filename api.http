@@ -16,11 +16,11 @@ GET http://localhost:8000/api/student/
 
 ###
 # Exibe estudante 
-GET http://localhost:8000/api/student/15
+GET http://localhost:8000/api/student/2
 
 ###
 # Atualiza estudante
-PUT http://localhost:8000/api/student/15
+PUT http://localhost:8000/api/student/2
 Content-Type: application/json
 
 {
@@ -32,5 +32,5 @@ Content-Type: application/json
 
 ###
 # Deleta estudante
-DELETE http://localhost:8000/api/student/15
+DELETE http://localhost:8000/api/student/2
 

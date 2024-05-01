@@ -1,6 +1,6 @@
 from django.template import loader
 from django.http import HttpResponse, HttpRequest
-from .models import Student
+from ..models.student_model import Student
 
 
 def templateStudentLitView(request: HttpRequest) -> HttpResponse:
