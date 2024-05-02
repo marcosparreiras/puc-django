@@ -5,7 +5,7 @@ from ..models.student_model import Student
 
 def templateStudentLitView(request: HttpRequest) -> HttpResponse:
     template = loader.get_template("student-list.html")
-    context = {"students": Student.objects.all()}
+    context = {"students": Student.findAll()}
     return HttpResponse(template.render(context, request))
 
 
@@ -15,11 +15,10 @@ def templateStudentCreateView(request: HttpRequest) -> HttpResponse:
 
 
 def templateStudentEditView(request: HttpRequest, student_code: int) -> HttpResponse:
-    try:
-        template = loader.get_template("student-edit.html")
-        context = {"student": Student.objects.get(student_code=student_code)}
-    except Student.DoesNotExist:
+    student = Student.findByStudentCode(student_code)
+    if student is None:
         template = loader.get_template("student-404.html")
-        context = None
-    finally:
-        return HttpResponse(template.render(context, request))
+        return HttpResponse(template.render(None, request))
+    template = loader.get_template("student-edit.html")
+    context = {"student": student}
+    return HttpResponse(template.render(context, request))
