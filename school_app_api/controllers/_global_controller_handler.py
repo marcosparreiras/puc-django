@@ -7,10 +7,10 @@ from rest_framework.status import (
 from rest_framework.response import Response
 from rest_framework.request import Request
 
-from ..exceptions.invalid_request_payload_exception import (
+from .exceptions.invalid_request_payload_exception import (
     InvalidRequestPayloadException,
 )
-from ..exceptions.student_not_found_exception import StudentNotFoundException
+from .exceptions.student_not_found_exception import StudentNotFoundException
 
 
 def globalControllerHandler(
