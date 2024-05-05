@@ -31,7 +31,7 @@ git clone https://github.com/marcosparreiras/puc-django.git
 docker compose up -d --build
 ```
 
-3. Verifique a os containers foram executados com sucesso com o comando:
+3. Verifique se os containers foram executados com sucesso com o comando:
 
 ```bash
 docker compose logs
