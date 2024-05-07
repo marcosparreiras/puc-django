@@ -27,7 +27,7 @@ Content-Type: application/json
 
 ###
 # Lista estudantes
-GET http://localhost:8000/api/student/
+GET http://localhost:8000/api/student/?name=ma
 
 ###
 # Exibe estudante 

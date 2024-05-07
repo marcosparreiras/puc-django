@@ -1,5 +1,6 @@
 import json
 import jwt
+import os
 from django.test import TestCase
 from django.test import Client
 from django.core.management import call_command
@@ -9,7 +10,7 @@ from .factories.student_factory import studenteFactory
 
 class RestApiTestE2e(TestCase):
     client = Client()
-    cookies = f"token={jwt.encode({"sub": 1}, "default", algorithm="HS256")}"
+    cookies = f"token={jwt.encode({"sub": 1}, os.environ.get("JWT_SECRET"), algorithm="HS256")}"
 
 
     def setUp(self):

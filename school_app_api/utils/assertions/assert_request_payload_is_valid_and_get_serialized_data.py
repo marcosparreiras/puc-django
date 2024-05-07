@@ -5,7 +5,7 @@ from ..exceptions.invalid_request_payload_exception import (
 )
 
 
-def assertRequestPayloadIsValid(
+def assertRequestPayloadIsValidAndGetSerializedData(
     requestData: Request.data, serializer: ModelSerializer
 ) -> dict:
     requestPayload = serializer(data=requestData)

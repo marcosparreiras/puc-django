@@ -1,5 +1,6 @@
 import json
 import jwt
+import os
 from django.test import TestCase
 from django.test import Client
 from django.core.management import call_command
@@ -8,7 +9,7 @@ from school_app_api.models.student_model import Student
 
 class RestApiTestE2e(TestCase):
     client = Client()
-    cookies = f"token={jwt.encode({"sub": 1}, "default", algorithm="HS256")}"
+    cookies = f"token={jwt.encode({"sub": 1}, os.environ.get("JWT_SECRET"), algorithm="HS256")}"
 
     def setUp(self):
         call_command("flush", interactive=False, verbosity=0)

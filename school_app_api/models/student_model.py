@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Any
 from django.db import models
 from datetime import date
 
@@ -12,8 +12,14 @@ class Student(models.Model):
     address_number = models.IntegerField(null=False)
 
     @staticmethod
-    def findAll() -> List["Student"]:
-        return Student.objects.all()
+    def findMany(**kwargs: Any) -> List["Student"]:
+        students = Student.objects.all().order_by("-created_at")
+        if len(kwargs) <= 0:
+            return students
+        kwargs_conteins = {
+            f"{chave}__icontains": valor for chave, valor in kwargs.items()
+        }
+        return students.filter(**kwargs_conteins)
 
     @staticmethod
     def findByStudentCode(student_code: int) -> Optional["Student"]:

@@ -6,7 +6,7 @@ from ..exceptions.invalid_request_payload_exception import (
 )
 
 
-def assertCreateSessionCredentialsAreValid(
+def assertCredentialsAreValidAndGetUserId(
     email: Optional[str], password: Optional[str]
 ) -> int:
     if email is None or password is None:

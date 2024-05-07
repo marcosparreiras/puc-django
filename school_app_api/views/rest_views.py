@@ -13,20 +13,19 @@ from ..utils.controllers.student.update_student_controller import (
 from ..utils.controllers.student.delete_student_controller import (
     deleteStudentController,
 )
-from ..utils.controllers._global_controller_handler import globalControllerHandler
 from ..utils.controllers.session.create_session_controller import (
     createSessionController,
 )
 from ..utils.controllers.session.delete_session_controller import (
     deleteSessionController,
 )
+from ..utils.decorators.rest_error_handler_decorator import restErrorHandler
 
 
 @api_view(["POST", "DELETE"])
 def sessionView(request: Request) -> Response:
     controllers = {"POST": createSessionController, "DELETE": deleteSessionController}
-    response = globalControllerHandler(request, controllers)
-    return response
+    return restErrorHandler(controllers[request.method])(request)
 
 
 @api_view(["POST", "GET"])
@@ -35,8 +34,7 @@ def restStudentView(request: Request) -> Response:
         "POST": createStudentController,
         "GET": listStudentsController,
     }
-    response = globalControllerHandler(request, controllers)
-    return response
+    return restErrorHandler(controllers[request.method])(request)
 
 
 @api_view(["GET", "PUT", "DELETE"])
@@ -46,5 +44,6 @@ def restStudentCodeView(request: Request, student_code: int) -> Response:
         "PUT": updateStudentController,
         "DELETE": deleteStudentController,
     }
-    response = globalControllerHandler(request, controllers, student_code=student_code)
-    return response
+    return restErrorHandler(controllers[request.method])(
+        request, student_code=student_code
+    )

@@ -2,16 +2,18 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.status import HTTP_201_CREATED
 from ....models.student_model import Student
-from ...assertions.assert_request_payload_is_valid import assertRequestPayloadIsValid
-from ...assertions.assert_authentication import assertAuthentication
+from ...decorators.rest_auth_required_decorator import restAuthRequired
 from ...serializers.create_student_request_serialiazer import (
     CreateStudentRequestSerialiazer,
 )
+from ...assertions.assert_request_payload_is_valid_and_get_serialized_data import (
+    assertRequestPayloadIsValidAndGetSerializedData,
+)
 
 
+@restAuthRequired
 def createStudentController(request: Request) -> Response:
-    assertAuthentication(request)
-    requestPayload = assertRequestPayloadIsValid(
+    requestPayload = assertRequestPayloadIsValidAndGetSerializedData(
         request.data, CreateStudentRequestSerialiazer
     )
     student_code = Student.create(

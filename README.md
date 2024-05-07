@@ -45,3 +45,8 @@ docker compose logs
 ```bash
 http://localhost:8000/api/student/app/home
 ```
+
+## Credenciais
+
+- email: admin@example.com
+- password: 123456

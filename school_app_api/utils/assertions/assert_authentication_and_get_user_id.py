@@ -4,7 +4,7 @@ from django.http import HttpRequest
 from ..exceptions.unauthorized_exception import UnauthorizedException
 
 
-def assertAuthentication(request: HttpRequest) -> int:
+def assertAuthenticationAndGetUserId(request: HttpRequest) -> int:
     token = request.COOKIES.get("token")
     if token is None:
         raise UnauthorizedException()
