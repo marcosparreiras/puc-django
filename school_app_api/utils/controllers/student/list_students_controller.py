@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.status import HTTP_200_OK
-from ..models.student_model import Student
-from .assertions.assert_authentication import assertAuthentication
+from ....models.student_model import Student
+from ...assertions.assert_authentication import assertAuthentication
 
 
 def listStudentsController(request: Request) -> Response:

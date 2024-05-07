@@ -1,9 +1,9 @@
 from typing import Dict, Callable
 from rest_framework.response import Response
 from rest_framework.request import Request
-from .exceptions.student_not_found_exception import StudentNotFoundException
-from .exceptions.unauthorized_exception import UnauthorizedException
-from .exceptions.invalid_request_payload_exception import (
+from ..exceptions.student_not_found_exception import StudentNotFoundException
+from ..exceptions.unauthorized_exception import UnauthorizedException
+from ..exceptions.invalid_request_payload_exception import (
     InvalidRequestPayloadException,
 )
 from rest_framework.status import (

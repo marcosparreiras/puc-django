@@ -3,7 +3,7 @@ import os
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.status import HTTP_201_CREATED
-from .assertions.assert_create_session_credentials_are_valid import (
+from ...assertions.assert_create_session_credentials_are_valid import (
     assertCreateSessionCredentialsAreValid,
 )
 
