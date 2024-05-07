@@ -79,6 +79,18 @@
         transition: 150ms ease-in;
       }
 
+      .btn-logout {
+        background: none;
+        border: none;
+        color: rgb(192, 42, 42);
+        margin-left: auto;
+        display: block;
+      }
+
+      .btn-logout:hover {
+        filter: brightness(1.4);
+      }
+
       .add-btn {
         background: none;
         color: rgb(53, 240, 53);
@@ -117,6 +129,7 @@
     </style>
   </head>
   <body>
+    <button class="btn-logout" onclick="handleLogout()">sair</button>
     <header>
       <h1>Alunos</h1>
       <button class="add-btn" onclick="handleAdd()">Add</button>
@@ -173,6 +186,17 @@
       location = url.toString();
     }
 
+    async function handleLogout() {
+      const response = await fetch(`http://localhost:8000/api/session/`, {
+        method: "DELETE",
+      });
+      if (response.status < 200 || response.status >= 300) {
+        alert("Algo deu errado, tente novamente mais tarde!");
+        return;
+      }
+      location.reload();
+    }
+
     function handleAdd() {
       redirectTo("/api/student/app/create");
     }
@@ -186,6 +210,9 @@
     async function handleDelete(event) {
       const button = event.target;
       const { code, name } = button.dataset;
+      if (!confirm("confirme para excluir")) {
+        return;
+      }
       const response = await fetch(
         `http://localhost:8000/api/student/${code}`,
         {
@@ -196,7 +223,6 @@
         alert("Algo deu errado, tente novamente mais tarde!");
         return;
       }
-      alert(`Estudante ${name} excluido com sucesso!`);
       location.reload();
     }
   </script>

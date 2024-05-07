@@ -1,4 +1,5 @@
 import json
+import jwt
 from django.test import TestCase
 from django.test import Client
 from django.core.management import call_command
@@ -8,6 +9,8 @@ from .factories.student_factory import studenteFactory
 
 class RestApiTestE2e(TestCase):
     client = Client()
+    cookies = f"token={jwt.encode({"sub": 1}, "default", algorithm="HS256")}"
+
 
     def setUp(self):
         call_command("flush", interactive=False, verbosity=0)
@@ -21,6 +24,7 @@ class RestApiTestE2e(TestCase):
             "address_number": student.address_number,
         }
         data_json = json.dumps(data)
+        self.client.cookies.load(self.cookies)
         response = self.client.put(
             "/api/student/1", data=data_json, content_type="application/json"
         )
@@ -36,6 +40,7 @@ class RestApiTestE2e(TestCase):
             "address_street": "Pine Street West",
         }
         data_json = json.dumps(data)
+        self.client.cookies.load(self.cookies)
         response = self.client.put(
             "/api/student/1", data=data_json, content_type="application/json"
         )
@@ -51,9 +56,26 @@ class RestApiTestE2e(TestCase):
             "address_number": 45,
         }
         data_json = json.dumps(data)
+        self.client.cookies.load(self.cookies)
         response = self.client.put(
             "/api/student/1", data=data_json, content_type="application/json"
         )
         response_data = json.loads(response.content.decode("utf-8"))
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response_data["message"], "Student (1) not found")
+
+
+    def test_update_student_without_token(self) -> None:
+        student = studenteFactory("Thomas Frank")
+        data = {
+            "name": "John Doe",
+            "date_of_birth": str(student.date_of_birth),
+            "address_street": student.address_street,
+            "address_number": student.address_number,
+        }
+        data_json = json.dumps(data)
+        self.client.cookies.clear()
+        response = self.client.put(
+            "/api/student/1", data=data_json, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 401)

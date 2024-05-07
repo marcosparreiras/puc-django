@@ -25,6 +25,9 @@ services:
       - SCHOOL_DB_PASSWORD=admin
       - SCHOOL_DB_HOST=school_db
       - SCHOOL_DB_PORT=5432
+      - ADMIN_EMAIL=admin@example.com
+      - ADMIN_PASSWORD=123456
+      - JWT_SECRET=default
     ports:
       - 8000:8000
     depends_on:

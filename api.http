@@ -1,4 +1,19 @@
 ###
+# Login
+POST http://localhost:8000/api/session/
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "123456"
+}
+
+###
+# Logout
+DELETE http://localhost:8000/api/session/
+
+###
+
 # Cria estudante
 POST http://localhost:8000/api/student/
 Content-Type: application/json

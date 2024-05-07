@@ -8,6 +8,15 @@ from ..controllers.get_student_controller import getStudentController
 from ..controllers.update_student_controller import updateStudentController
 from ..controllers.delete_student_controller import deleteStudentController
 from ..controllers._global_controller_handler import globalControllerHandler
+from ..controllers.create_session_controller import createSessionController
+from ..controllers.delete_session_controller import deleteSessionController
+
+
+@api_view(["POST", "DELETE"])
+def sessionView(request: Request) -> Response:
+    controllers = {"POST": createSessionController, "DELETE": deleteSessionController}
+    response = globalControllerHandler(request, controllers)
+    return response
 
 
 @api_view(["POST", "GET"])

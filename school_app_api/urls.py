@@ -1,5 +1,5 @@
 from django.urls import path
-from .views.rest_views import restStudentView, restStudentCodeView
+from .views.rest_views import restStudentView, restStudentCodeView, sessionView
 from .views.template_views import (
     templateStudentLitView,
     templateStudentCreateView,
@@ -9,6 +9,7 @@ from .views.template_views import (
 
 urlpatterns = [
     # REST API
+    path("session/", sessionView),
     path("student/", restStudentView),
     path("student/<int:student_code>", restStudentCodeView),
     # Template API
