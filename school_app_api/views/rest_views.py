@@ -23,27 +23,28 @@ from ..utils.decorators.rest_error_handler_decorator import restErrorHandler
 
 
 @api_view(["POST", "DELETE"])
+@restErrorHandler
 def sessionView(request: Request) -> Response:
     controllers = {"POST": createSessionController, "DELETE": deleteSessionController}
-    return restErrorHandler(controllers[request.method])(request)
+    return controllers[request.method](request)
 
 
 @api_view(["POST", "GET"])
+@restErrorHandler
 def restStudentView(request: Request) -> Response:
     controllers = {
         "POST": createStudentController,
         "GET": listStudentsController,
     }
-    return restErrorHandler(controllers[request.method])(request)
+    return controllers[request.method](request)
 
 
 @api_view(["GET", "PUT", "DELETE"])
+@restErrorHandler
 def restStudentCodeView(request: Request, student_code: int) -> Response:
     controllers = {
         "GET": getStudentController,
         "PUT": updateStudentController,
         "DELETE": deleteStudentController,
     }
-    return restErrorHandler(controllers[request.method])(
-        request, student_code=student_code
-    )
+    return controllers[request.method](request, student_code=student_code)
