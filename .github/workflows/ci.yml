@@ -1,6 +1,13 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened]
+    branches:
+      - main
 
 env:
   POSTGRES_DB: school_db
@@ -28,12 +35,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.4
+
       - name: Setup Python
         uses: actions/setup-python@v5.1.0
         with:
           python-version: "3.12"
-      - run: pip install -r requirements.txt
-      - run: python manage.py migrate && python manage.py test
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: Run migrations
+        run: python manage.py migrate
+        env:
+          SCHOOL_DB_HOST: localhost
+          SCHOOL_DB_NAME: ${{ env.POSTGRES_DB }}
+          SCHOOL_DB_USER: ${{ env.POSTGRES_USER }}
+          SCHOOL_DB_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          SCHOOL_DB_PORT: ${{ env.POSTGRES_PORT }}
+
+      - name: Run tests
+        run: python manage.py test
         env:
           SCHOOL_DB_HOST: localhost
           SCHOOL_DB_NAME: ${{ env.POSTGRES_DB }}
@@ -43,3 +64,29 @@ jobs:
           ADMIN_EMAIL: ${{ env.ADMIN_EMAIL }}
           ADMIN_PASSWORD: ${{ env.ADMIN_PASSWORD }}
           JWT_SECRET: ${{ env.JWT_SECRET }}
+
+  build-and-push:
+    name: Build and Push
+    needs: [run-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.4
+
+      - name: Generate commit tag
+        id: generate_commit_tag
+        run: |
+          SHA=$(echo $GITHUB_SHA | head -c7)
+          echo "::set-output name=sha::$SHA"
+
+      - name: Login into container registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push docker image
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: marcosparreiras/puc-django:${{ steps.generate_commit_tag.outputs.sha }},marcosparreiras/puc-django:latest
