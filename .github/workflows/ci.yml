@@ -1,0 +1,45 @@
+name: CI
+
+on: [push, pull_request]
+
+env:
+  POSTGRES_DB: school_db
+  POSTGRES_USER: admin
+  POSTGRES_PASSWORD: admin
+  POSTGRES_PORT: 5432
+  ADMIN_EMAIL: admin@example.com
+  ADMIN_PASSWORD: 123456
+  JWT_SECRET: default
+
+jobs:
+  run-tests:
+    name: run-tests
+    runs-on: ubuntu-latest
+    services:
+      postgress:
+        image: postgres
+        ports:
+          - $POSTGRES_PORT:$POSTGRES_PORT
+        env:
+          POSTGRES_DB: $POSTGRES_DB
+          POSTGRES_USER: $POSTGRES_USER
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.4
+      - name: Setup Python
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python manage.py test
+        env:
+          SCHOOL_DB_HOST: localhost
+          SCHOOL_DB_NAME: $POSTGRES_DB
+          SCHOOL_DB_USER: $POSTGRES_USER
+          SCHOOL_DB_PASSWORD: $POSTGRES_PASSWORD
+          SCHOOL_DB_PORT: $POSTGRES_PORT
+          ADMIN_EMAIL: $ADMIN_EMAIL
+          ADMIN_PASSWORD: $ADMIN_PASSWORD
+          JWT_SECRET: $JWT_SECRET
