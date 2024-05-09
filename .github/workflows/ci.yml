@@ -19,11 +19,11 @@ jobs:
       postgress:
         image: postgres
         ports:
-          - $POSTGRES_PORT:$POSTGRES_PORT
+          - 5432:5432
         env:
-          POSTGRES_DB: $POSTGRES_DB
-          POSTGRES_USER: $POSTGRES_USER
-          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
 
     steps:
       - name: Checkout
@@ -33,13 +33,13 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - run: python manage.py test
+      - run: python manage.py migrate && python manage.py test
         env:
           SCHOOL_DB_HOST: localhost
-          SCHOOL_DB_NAME: $POSTGRES_DB
-          SCHOOL_DB_USER: $POSTGRES_USER
-          SCHOOL_DB_PASSWORD: $POSTGRES_PASSWORD
-          SCHOOL_DB_PORT: $POSTGRES_PORT
-          ADMIN_EMAIL: $ADMIN_EMAIL
-          ADMIN_PASSWORD: $ADMIN_PASSWORD
-          JWT_SECRET: $JWT_SECRET
+          SCHOOL_DB_NAME: ${{ env.POSTGRES_DB }}
+          SCHOOL_DB_USER: ${{ env.POSTGRES_USER }}
+          SCHOOL_DB_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          SCHOOL_DB_PORT: ${{ env.POSTGRES_PORT }}
+          ADMIN_EMAIL: ${{ env.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ env.ADMIN_PASSWORD }}
+          JWT_SECRET: ${{ env.JWT_SECRET }}
